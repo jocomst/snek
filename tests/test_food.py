@@ -1,6 +1,16 @@
 # test_food.py
+
+import os
+import sys
 import pytest
-from food import Food
+
+# Calculate the absolute path to the src directory and append it to sys.path
+current_dir = os.path.dirname(__file__)
+parent_dir = os.path.join(current_dir, os.pardir)
+src_path = os.path.abspath(os.path.join(parent_dir, 'src'))
+sys.path.insert(0, src_path)
+
+from food import Food  # Import the Food class
 
 # Mocking pygame display surface for tests
 class MockDisplay:
