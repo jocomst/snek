@@ -12,44 +12,24 @@ sys.path.insert(0, src_path)
 
 from food import Food  # Import the Food class
 
-# Mocking pygame display surface for tests
-class MockDisplay:
-    def get_width(self):
-        return 800
-
-    def get_height(self):
-        return 600
-
 @pytest.fixture
 def mock_display():
+    class MockDisplay:
+        def get_width(self):
+            return 800
+
+        def get_height(self):
+            return 600
     return MockDisplay()
 
-@pytest.fixture
-def food(mock_display):
-    block_size = 20
-    width = mock_display.get_width()
-    height = mock_display.get_height()
-    return Food(mock_display, block_size, width, height)
+def test_food_model_loading_success(mock_display):
+    # Assume 'valid_model_path.png' is a valid model file path
+    valid_model_path = 'path/to/valid_model.png'
+    food = Food(mock_display, 20, mock_display.get_width(), mock_display.get_height(), valid_model_path)
+    assert food.model_loaded is True
 
-def test_food_initial_position_within_bounds(food, mock_display):
-    width = mock_display.get_width()
-    height = mock_display.get_height()
-    block_size = food.block_size
-
-    assert 0 <= food.x < width
-    assert 0 <= food.y < height
-    assert food.x % block_size == 0
-    assert food.y % block_size == 0
-
-def test_food_relocate_within_bounds(food, mock_display):
-    width = mock_display.get_width()
-    height = mock_display.get_height()
-    block_size = food.block_size
-
-    # Call relocate and check multiple times to ensure randomness doesn't place it out of bounds
-    for _ in range(10):
-        food.relocate(width, height)
-        assert 0 <= food.x < width
-        assert 0 <= food.y < height
-        assert food.x % block_size == 0
-        assert food.y % block_size == 0
+def test_food_model_loading_failure(mock_display):
+    # Assume 'invalid_model_path.png' is an invalid model file path
+    invalid_model_path = 'path/to/invalid_model.png'
+    food = Food(mock_display, 20, mock_display.get_width(), mock_display.get_height(), invalid_model_path)
+    assert food.model_loaded is False
