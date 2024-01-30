@@ -7,6 +7,9 @@ class Snake:
         self.block_size = block_size
         self.positions = [[display.get_width() / 2, display.get_height() / 2]]
         self.model_loaded = False
+        # Initialize x_change and y_change to zero
+        self.x_change = 0
+        self.y_change = 0
         
         if model_path:
             try:
