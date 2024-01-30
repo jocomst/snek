@@ -1,13 +1,25 @@
 import pygame
 
 class Snake:
-    def __init__(self, display, block_size):
+    def __init__(self, display, block_size, model_path=None):
         self.display = display
         self.color = (0, 0, 0)  # Black
         self.block_size = block_size
         self.positions = [[display.get_width() / 2, display.get_height() / 2]]
-        self.x_change = 0
-        self.y_change = 0
+        self.model_loaded = False
+        
+        if model_path:
+            try:
+                self.model = self.load_model(model_path)
+                self.model_loaded = True
+            except Exception as e:
+                print(f"Could not load the model at {model_path}: {e}")
+                self.model = None
+    
+    def load_model(self, model_path):
+        # Replace this with actual model loading logic.
+        # For now, let's assume it's a pygame Surface object.
+        return pygame.image.load(model_path)
 
     def move(self, x_change, y_change):
         self.x_change = x_change
