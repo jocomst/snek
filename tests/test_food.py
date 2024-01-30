@@ -24,7 +24,7 @@ def mock_display():
 
 def test_food_model_loading_success(mock_display):
     # Assume 'valid_model_path.png' is a valid model file path
-    valid_model_path = './models/testFood.png'
+    valid_model_path = './models/fakeModel.png'
     food = Food(mock_display, 20, mock_display.get_width(), mock_display.get_height(), valid_model_path)
     assert food.model_loaded is True
 

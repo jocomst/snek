@@ -1,6 +1,7 @@
 import os
 import sys
 import pytest
+from unittest.mock import Mock, patch
 
 # Calculate the absolute path to the src directory and append it to sys.path
 current_dir = os.path.dirname(__file__)
@@ -62,5 +63,22 @@ def test_snake_direction_change(snake):
     # Check if the new head's y position has changed based on the initial head position
     assert snake.positions[-1][0] == initial_head[0]
     assert snake.positions[-1][1] == initial_head[1] + snake.block_size
+
+def test_snake_model_loading_success(mock_display):
+    with patch('pygame.image.load') as mock_load:
+        # Assuming 'valid_model_path.png' is a valid path for the model
+        valid_model_path = './models/fakeModel.png'
+        mock_load.return_value = Mock()  # Mock the pygame surface returned by image.load
+        
+        snake = Snake(mock_display, 20, valid_model_path)
+        assert snake.model_loaded is True
+
+def test_snake_model_loading_failure(mock_display):
+    with patch('pygame.image.load', side_effect=Exception('Load failed')):
+        # Assuming 'invalid_model_path.png' is an invalid path for the model
+        invalid_model_path = 'path/to/invalid_model.png'
+        
+        snake = Snake(mock_display, 20, invalid_model_path)
+        assert snake.model_loaded is False
 
 # ... rest of the tests ...
