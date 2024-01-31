@@ -2,77 +2,92 @@ import pygame
 import snake
 import food
 
-# Initialize Pygame
-pygame.init()
+class SnakeGame:
+    def __init__(self):
+        pygame.init()
 
-# Colors
-white = (255, 255, 255)
-red = (255, 0, 0)
+        # Game Configuration
+        self.width, self.height = 600, 400
+        self.white = (255, 255, 255)
+        self.red = (255, 0, 0)
+        self.snake_block = 10
+        self.snake_speed = 15
 
-# Game Display Setup
-width, height = 600, 400
-game_display = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Snake Game')
+        # Game Initialization
+        self.game_display = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption('Snake Game')
+        self.clock = pygame.time.Clock()
+        self.font_style = pygame.font.SysFont(None, 50)
 
-# Game Clock
-clock = pygame.time.Clock()
+        # Game State
+        self.game_over = False
+        self.game_close = False
 
-# Game Variables
-snake_block = 10
-snake_speed = 15
-font_style = pygame.font.SysFont(None, 50)
+        # Game Entities
+        self.player_snake = snake.Snake(self.game_display, self.snake_block)
+        self.apple = food.Food(self.game_display, self.snake_block, self.width, self.height)
 
-def message(msg, color):
-    mesg = font_style.render(msg, True, color)
-    game_display.blit(mesg, [width / 6, height / 3])
+    def message(self, msg, color):
+        mesg = self.font_style.render(msg, True, color)
+        self.game_display.blit(mesg, [self.width / 6, self.height / 3])
 
-def run_game():
-    player_snake = snake.Snake(game_display, snake_block)
-    apple = food.Food(game_display, snake_block, width, height)
-    game_over = False
-    game_close = False
+    def run_game(self):
+        while not self.game_over:
+            while self.game_close:
+                self.game_display.fill(self.white)
+                self.message("You Lost! Press C-Play Again or Q-Quit", self.red)
+                pygame.display.update()
 
-    while not game_over:
-        while game_close:
-            game_display.fill(white)
-            message("You Lost! Press C-Play Again or Q-Quit", red)
-            pygame.display.update()
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_q:
+                            self.game_over = True
+                            self.game_close = False
+                        if event.key == pygame.K_c:
+                            self.__init__()  # Reinitialize the game
 
             for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.game_over = True
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        game_over = True
-                        game_close = False
-                    if event.key == pygame.K_c:
-                        run_game()
+                    # Handle snake movement
+                    self.handle_snake_movement(event)
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                game_over = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    player_snake.move(-snake_block, 0)
-                elif event.key == pygame.K_RIGHT:
-                    player_snake.move(snake_block, 0)
-                elif event.key == pygame.K_UP:
-                    player_snake.move(0, -snake_block)
-                elif event.key == pygame.K_DOWN:
-                    player_snake.move(0, snake_block)
+            self.update_game_state()
+            pygame.display.update()
+            self.clock.tick(self.snake_speed)
 
-        if player_snake.positions[-1][0] >= width or player_snake.positions[-1][0] < 0 or player_snake.positions[-1][1] >= height or player_snake.positions[-1][1] < 0:
-            game_close = True
+        pygame.quit()
+        quit()
 
-        player_snake.update()
-        game_display.fill(white)
-        apple.draw()
-        player_snake.draw()
+    def handle_snake_movement(self, event):
+        if event.key == pygame.K_LEFT:
+            self.player_snake.move(-self.snake_block, 0)
+        elif event.key == pygame.K_RIGHT:
+            self.player_snake.move(self.snake_block, 0)
+        elif event.key == pygame.K_UP:
+            self.player_snake.move(0, -self.snake_block)
+        elif event.key == pygame.K_DOWN:
+            self.player_snake.move(0, self.snake_block)
 
-        if player_snake.positions[-1][0] == apple.x and player_snake.positions[-1][1] == apple.y:
-            apple.relocate(width, height)
-            player_snake.grow()
+    def update_game_state(self):
+        if self.check_collision():
+            self.game_close = True
 
-        pygame.display.update()
-        clock.tick(snake_speed)
+        self.player_snake.update()
+        self.game_display.fill(self.white)
+        self.apple.draw()
+        self.player_snake.draw()
 
-    pygame.quit()
-    quit()
+        if self.player_snake.positions[-1][0] == self.apple.x and self.player_snake.positions[-1][1] == self.apple.y:
+            self.apple.relocate(self.width, self.height)
+            self.player_snake.grow()
+
+    def check_collision(self):
+        head = self.player_snake.positions[-1]
+        return head[0] >= self.width or head[0] < 0 or head[1] >= self.height or head[1] < 0
+
+# To run the game
+if __name__ == "__main__":
+    game = SnakeGame()
+    game.run_game()
