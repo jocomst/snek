@@ -27,6 +27,13 @@ class SnakeGame:
         self.player_snake = snake.Snake(self.game_display, self.snake_block)
         self.apple = food.Food(self.game_display, self.snake_block, self.width, self.height)
 
+        # Game Grass Texture
+        try:
+            self.grass_texture = pygame.image.load('./models/fakeModel.png')
+            self.grass_texture = pygame.transform.scale(self.grass_texture, (self.width, self.height))
+        except pygame.error:
+            self.grass_texture = None
+
     def message(self, msg, color):
         mesg = self.font_style.render(msg, True, color)
         self.game_display.blit(mesg, [self.width / 6, self.height / 3])
