@@ -82,7 +82,7 @@ class SnakeGame:
             self.game_close = True
 
         self.player_snake.update()
-    
+        
         # Draw the grass texture if it's loaded, otherwise fill with white.
         if self.grass_texture:
             self.game_display.blit(self.grass_texture, (0, 0))
@@ -92,19 +92,14 @@ class SnakeGame:
         self.apple.draw()
         self.player_snake.draw()
 
+        # Check if the snake has eaten the apple
         if self.player_snake.positions[-1][0] == self.apple.x and self.player_snake.positions[-1][1] == self.apple.y:
             self.apple.relocate(self.width, self.height)
             self.player_snake.grow()
+        
+        # Update the display only after all drawing operations
+        pygame.display.update()
 
-
-            self.player_snake.update()
-            self.game_display.fill(self.white)
-            self.apple.draw()
-            self.player_snake.draw()
-
-            if self.player_snake.positions[-1][0] == self.apple.x and self.player_snake.positions[-1][1] == self.apple.y:
-                self.apple.relocate(self.width, self.height)
-                self.player_snake.grow()
 
     def check_collision(self):
         head = self.player_snake.positions[-1]
