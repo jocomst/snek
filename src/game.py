@@ -29,7 +29,7 @@ class SnakeGame:
 
         # Game Grass Texture
         try:
-            self.grass_texture = pygame.image.load('./models/fakeModel.png')
+            self.grass_texture = pygame.image.load('./models/grassTexture.jpg')
             self.grass_texture = pygame.transform.scale(self.grass_texture, (self.width, self.height))
         except pygame.error:
             self.grass_texture = None
