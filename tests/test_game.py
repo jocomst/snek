@@ -13,6 +13,21 @@ import snake
 import food
 from game import SnakeGame  # Assuming your game class is in a file named game.py
 
+@pytest.fixture
+def game():
+    """Fixture to create a game instance for each test."""
+    game_instance = SnakeGame()
+    yield game_instance
+    # Teardown code here if necessary, e.g., closing the Pygame window
+    pygame.quit()
+
+def test_initialization(game):
+    """Test game initializes with correct default values."""
+    assert game.width == 600
+    assert game.height == 400
+    assert not game.game_over
+    assert not game.game_close
+
 # Test to ensure the grass texture loads correctly
 def test_grass_texture_loading():
     game = SnakeGame()
