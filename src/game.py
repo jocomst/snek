@@ -1,6 +1,10 @@
 import pygame
-import snake
-import food
+from pygame.locals import *
+from OpenGL.GL import *
+from OpenGL.GLU import *
+import snake  # You will need to update this for 3D
+import food  # You will need to update this for 3D
+
 
 class SnakeGame:
     def __init__(self):
