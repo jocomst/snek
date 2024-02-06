@@ -2,7 +2,7 @@ import pytest
 import os
 import sys
 from OpenGL.GL import *
-from OpenGL.GLU import *
+from unittest.mock import patch
 
 # Calculate the absolute path to the src directory and append it to sys.path
 current_dir = os.path.dirname(__file__)
@@ -12,24 +12,33 @@ sys.path.insert(0, src_path)
 
 from renderer import Renderer
 
-# Define a fixture for creating a Renderer instance
 @pytest.fixture
 def renderer():
     return Renderer()
 
-def test_renderer_initializes_with_expected_background_color(mocker, renderer):
-    glClearColor_mock = mocker.patch('OpenGL.GL.glClearColor')
-    renderer.initialize_scene()
-    glClearColor_mock.assert_called_with(0.5, 0.5, 0.5, 1.0)  # Assuming a grey background
+# Use context managers to patch each OpenGL function used in the Renderer methods
+def test_renderer_initializes_with_expected_background_color(renderer):
+    with patch('renderer.glClearColor') as mock_clear_color:
+        renderer.initialize_scene()
+        mock_clear_color.assert_called_once_with(0.5, 0.5, 0.5, 1.0)
 
-def test_camera_setup_with_expected_parameters(mocker, renderer):
-    gluPerspective_mock = mocker.patch('OpenGL.GLU.gluPerspective')
-    renderer.setup_camera()
-    gluPerspective_mock.assert_called_with(45.0, pytest.approx(1.33), 0.1, 50.0)  # Use `pytest.approx` for floating-point comparison
+def test_camera_setup_with_expected_parameters(renderer):
+    with patch('renderer.glMatrixMode') as mock_glMatrixMode, \
+         patch('renderer.glLoadIdentity'), \
+         patch('renderer.gluPerspective') as mock_gluPerspective:
+        renderer.setup_camera()
+        # Check if glMatrixMode was called with GL_PROJECTION at any point
+        mock_glMatrixMode.assert_any_call(GL_PROJECTION)
+        # Also, verify the aspect ratio passed to gluPerspective
+        mock_gluPerspective.assert_called_with(45.0, 800/600, 0.1, 50.0)
+        # Ensure glMatrixMode was called with GL_MODELVIEW as well
+        mock_glMatrixMode.assert_any_call(GL_MODELVIEW)
 
-def test_overhead_lighting_setup(mocker, renderer):
-    glEnable_mock = mocker.patch('OpenGL.GL.glEnable')
-    glLightfv_mock = mocker.patch('OpenGL.GL.glLightfv')
-    renderer.setup_lighting()
-    glEnable_mock.assert_called_with(OpenGL.GL.GL_LIGHT0)  # Check if lighting was enabled
-    # Further assertions can be added to check glLightfv calls
+
+def test_overhead_lighting_setup(renderer):
+    with patch('renderer.glEnable') as mock_glEnable, \
+         patch('renderer.glLightfv') as mock_glLightfv:
+        renderer.setup_lighting()
+        mock_glEnable.assert_any_call(GL_LIGHTING)
+        mock_glEnable.assert_any_call(GL_LIGHT0)
+        mock_glLightfv.assert_called_with(GL_LIGHT0, GL_POSITION, [0.0, 1.0, 1.0, 1.0])
