@@ -2,7 +2,7 @@ import pytest
 import os
 import sys
 from OpenGL.GL import *
-from unittest.mock import patch
+from unittest.mock import mock_open, patch
 
 # Calculate the absolute path to the src directory and append it to sys.path
 current_dir = os.path.dirname(__file__)
@@ -42,3 +42,31 @@ def test_overhead_lighting_setup(renderer):
         mock_glEnable.assert_any_call(GL_LIGHTING)
         mock_glEnable.assert_any_call(GL_LIGHT0)
         mock_glLightfv.assert_called_with(GL_LIGHT0, GL_POSITION, [0.0, 1.0, 1.0, 1.0])
+
+from unittest.mock import patch, mock_open
+
+def test_renderer_adds_model_from_obj_file(renderer):
+    with patch('renderer.glGenLists', return_value=1) as mock_glGenLists, \
+         patch('renderer.glNewList') as mock_glNewList, \
+         patch('renderer.glEndList') as mock_glEndList, \
+         patch('renderer.glBegin') as mock_glBegin, \
+         patch('renderer.glVertex3fv') as mock_glVertex3fv, \
+         patch('renderer.glEnd') as mock_glEnd, \
+         patch('renderer.glFlush') as mock_glFlush:
+        mock_obj_file_content = "v 0.0 0.0 0.0\nv 1.0 0.0 0.0\nv 1.0 1.0 0.0\nv 0.0 1.0 0.0\nf 1 2 3 4\n"
+        obj_file_path = "path/to/model.obj"
+
+        with patch('builtins.open', mock_open(read_data=mock_obj_file_content)):
+            renderer.add_model(obj_file_path)
+
+        # Check if OpenGL list functions were called
+        mock_glGenLists.assert_called_once()
+        mock_glNewList.assert_called_once_with(1, GL_COMPILE)
+        mock_glEndList.assert_called_once()
+        mock_glBegin.assert_called_once_with(GL_POLYGON)
+        mock_glEnd.assert_called_once()
+        assert mock_glVertex3fv.call_count == 4
+
+
+
+# Similar test can be created for 3DS files, with appropriate mock data and assertions

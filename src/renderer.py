@@ -1,5 +1,6 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
+import os
 
 class Renderer:
     def __init__(self):
@@ -31,3 +32,41 @@ class Renderer:
         glLightfv(GL_LIGHT0, GL_POSITION, light_position)
 
         # Additional light properties, like color and intensity, could be set here as well.
+    def add_model(self, file_path):
+        # Determine the file type (assuming the file extension is correct)
+        _, file_extension = os.path.splitext(file_path)
+        
+        if file_extension.lower() == '.obj':
+            self._load_obj(file_path)
+        elif file_extension.lower() == '.3ds':
+            self._load_3ds(file_path)
+        else:
+            raise ValueError("Unsupported file format")
+        
+    def _load_obj(self, file_path):
+        # A very simple OBJ file loader implementation
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+        
+        vertices = []
+        faces = []
+        
+        for line in lines:
+            if line.startswith('v '):
+                vertices.append(list(map(float, line.strip().split()[1:])))
+            elif line.startswith('f '):
+                face = [int(face.split('/')[0]) for face in line.strip().split()[1:]]
+                faces.append(face)
+        
+        # Now, you would use OpenGL calls to create and fill the display list
+        display_list = glGenLists(1)
+        glNewList(display_list, GL_COMPILE)
+        
+        glBegin(GL_POLYGON)
+        for face in faces:
+            for vertex_index in face:
+                glVertex3fv(vertices[vertex_index - 1])
+        glEnd()
+        
+        glEndList()
+        glFlush()
