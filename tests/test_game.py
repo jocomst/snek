@@ -28,6 +28,11 @@ def test_initialization(game):
     assert not game.game_over
     assert not game.game_close
 
+def test_game_initialization_with_renderer(game):
+    """Test if the SnakeGame is initialized with a renderer property."""
+    assert hasattr(game, 'renderer'), "SnakeGame instance should have a 'renderer' property"
+    assert game.renderer is not None, "'renderer' property should not be None"
+
 # Test to ensure the grass texture loads correctly
 def test_grass_texture_loading():
     game = SnakeGame()

@@ -4,6 +4,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import snake  # You will need to update this for 3D
 import food  # You will need to update this for 3D
+from renderer import Renderer
 
 
 class SnakeGame:
@@ -22,6 +23,8 @@ class SnakeGame:
         pygame.display.set_caption('Snake Game')
         self.clock = pygame.time.Clock()
         self.font_style = pygame.font.SysFont(None, 50)
+        # Initialize Renderer
+        self.renderer = Renderer()  # This line initializes the renderer property
 
         # Game State
         self.game_over = False
