@@ -106,7 +106,18 @@ class SnakeGame:
         
         # Update the display only after all drawing operations
         pygame.display.update()
+    
+    def render_scene(self):
+        # Clear the screen and depth buffer
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
+        # Render the 3D scene using the renderer
+        # Note: You need to update your snake and food classes to render in 3D
+        # self.player_snake.draw_3d()
+        # self.apple.draw_3d()
+
+        # Update the display after all 3D drawing operations
+        # No need to call pygame.display.update() since we're using OpenGL
 
     def check_collision(self):
         head = self.player_snake.positions[-1]
