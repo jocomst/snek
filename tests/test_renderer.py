@@ -11,10 +11,17 @@ src_path = os.path.abspath(os.path.join(parent_dir, 'src'))
 sys.path.insert(0, src_path)
 
 from renderer import Renderer
+from game import SnakeGame
 
 @pytest.fixture
 def renderer():
     return Renderer()
+
+@pytest.fixture
+def game():
+    # You might need to mock or adjust any initializations that require a display or input devices
+    game_instance = SnakeGame()
+    return game_instance
 
 # Use context managers to patch each OpenGL function used in the Renderer methods
 def test_renderer_initializes_with_expected_background_color(renderer):
@@ -67,6 +74,22 @@ def test_renderer_adds_model_from_obj_file(renderer):
         mock_glEnd.assert_called_once()
         assert mock_glVertex3fv.call_count == 4
 
+def test_run_game_initializes_loop_conditions(game, mocker):
+    # Mock necessary methods to ensure the game loop can run in a test environment
+    mocker.patch('pygame.display.set_mode')
+    mocker.patch('pygame.display.flip')
+    mocker.patch('pygame.time.Clock.tick')
+    
+    # Mock event.get to simulate a QUIT event so the game loop exits immediately
+    mocker.patch('pygame.event.get', return_value=[{'type': pygame.QUIT}])
 
+    # Mock any other methods if necessary, such as OpenGL calls, that aren't relevant to the test
+
+    # Call run_game and catch SystemExit to make sure the game attempts to quit cleanly
+    with pytest.raises(SystemExit):
+        game.run_game()
+
+    # Check if run_game set the game_over flag to True
+    assert game.game_over, "Game over flag should be set to True after exiting the loop"
 
 # Similar test can be created for 3DS files, with appropriate mock data and assertions
