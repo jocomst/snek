@@ -80,12 +80,15 @@ def test_run_game_initializes_loop_conditions(game, mocker):
     # Mock necessary methods to ensure the game loop can run in a test environment
     mocker.patch('pygame.display.set_mode')
     mocker.patch('pygame.display.flip')
-    
+
     # Mock the event.get to simulate a QUIT event so the game loop exits immediately
     mocker.patch('pygame.event.get', return_value=[pygame.event.Event(pygame.QUIT)])
 
-    # Call run_game and check if it sets the game_over flag to True
-    game.run_game()
+    with pytest.raises(SystemExit):
+        # Call run_game and it should raise SystemExit
+        game.run_game()
+
+    # After handling the exception, you can now check if the game_over flag is set
     assert game.game_over, "Game over flag should be set to True after running the game loop"
 
 # Similar test can be created for 3DS files, with appropriate mock data and assertions
