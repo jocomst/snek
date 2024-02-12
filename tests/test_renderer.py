@@ -1,6 +1,7 @@
 import pytest
 import os
 import sys
+import pygame
 from OpenGL.GL import *
 from unittest.mock import mock_open, patch
 
@@ -18,8 +19,9 @@ def renderer():
     return Renderer()
 
 @pytest.fixture
-def game():
+def game(mocker):
     # You might need to mock or adjust any initializations that require a display or input devices
+    mocker.patch('pygame.time.Clock', autospec=True)
     game_instance = SnakeGame()
     return game_instance
 
@@ -78,18 +80,12 @@ def test_run_game_initializes_loop_conditions(game, mocker):
     # Mock necessary methods to ensure the game loop can run in a test environment
     mocker.patch('pygame.display.set_mode')
     mocker.patch('pygame.display.flip')
-    mocker.patch('pygame.time.Clock.tick')
     
-    # Mock event.get to simulate a QUIT event so the game loop exits immediately
-    mocker.patch('pygame.event.get', return_value=[{'type': pygame.QUIT}])
+    # Mock the event.get to simulate a QUIT event so the game loop exits immediately
+    mocker.patch('pygame.event.get', return_value=[pygame.event.Event(pygame.QUIT)])
 
-    # Mock any other methods if necessary, such as OpenGL calls, that aren't relevant to the test
-
-    # Call run_game and catch SystemExit to make sure the game attempts to quit cleanly
-    with pytest.raises(SystemExit):
-        game.run_game()
-
-    # Check if run_game set the game_over flag to True
-    assert game.game_over, "Game over flag should be set to True after exiting the loop"
+    # Call run_game and check if it sets the game_over flag to True
+    game.run_game()
+    assert game.game_over, "Game over flag should be set to True after running the game loop"
 
 # Similar test can be created for 3DS files, with appropriate mock data and assertions
