@@ -45,34 +45,36 @@ class SnakeGame:
         mesg = self.font_style.render(msg, True, color)
         self.game_display.blit(mesg, [self.width / 6, self.height / 3])
 
-    def run_game(self):
+    def run_game(self): 
+        # Initialize OpenGL settings
+        self.renderer.initialize_scene()
+        glEnable(GL_DEPTH_TEST)  # Enable depth testing
+
         while not self.game_over:
-            while self.game_close:
-                self.game_display.fill(self.white)
-                self.message("You Lost! Press C-Play Again or Q-Quit", self.red)
-                pygame.display.update()
-
-                for event in pygame.event.get():
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_q:
-                            self.game_over = True
-                            self.game_close = False
-                        if event.key == pygame.K_c:
-                            self.__init__()  # Reinitialize the game
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.game_over = True
                 if event.type == pygame.KEYDOWN:
-                    # Handle snake movement
-                    self.handle_snake_movement(event)
+                    # Handle snake movement here (adapted for 3D if necessary)
 
-            self.update_game_state()
-            pygame.display.update()
-            self.clock.tick(self.snake_speed)
+                        # Clear the screen and depth buffer
+                    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        pygame.quit()
-        quit()
+                        # Setup the camera for each frame
+                    self.renderer.setup_camera()
+
+                        # Render a 3D scene here
+                        # For example, setup lighting (if you haven't already)
+                    self.renderer.setup_lighting()
+
+                        # Draw a flat plane (You'll need to implement this method)
+                    self.renderer.draw_plane()
+
+                        # Swap buffers to display the scene
+                    pygame.display.flip()
+                    self.clock.tick(self.snake_speed)
+
+                    pygame.quit()
 
     def handle_snake_movement(self, event):
         if event.key == pygame.K_LEFT:
