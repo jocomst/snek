@@ -57,9 +57,11 @@ def test_run_game_initializes_loop_conditions(game, mocker):
     # Mock the event.get to simulate a QUIT event so the game loop exits immediately
     mocker.patch('pygame.event.get', return_value=[pygame.event.Event(pygame.QUIT)])
 
-    with pytest.raises(SystemExit):
-        # Call run_game and it should raise SystemExit
-        game.run_game()
+    # Mock OpenGL functions that require a valid context
+    mocker.patch('OpenGL.GL.glClearColor')
 
-    # After handling the exception, you can now check if the game_over flag is set
+    # Call run_game without expecting SystemExit to be raised
+    game.run_game()
+
+    # After running the game, check if the game_over flag is set to True
     assert game.game_over, "Game over flag should be set to True after running the game loop"
