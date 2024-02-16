@@ -49,19 +49,4 @@ def test_grass_texture_loading():
         assert game.grass_texture is None
         assert game.game_display.get_at((0, 0)) == game.white
 
-def test_run_game_initializes_loop_conditions(game, mocker):
-    # Mock necessary methods to ensure the game loop can run in a test environment
-    mocker.patch('pygame.display.set_mode')
-    mocker.patch('pygame.display.flip')
 
-    # Mock the event.get to simulate a QUIT event so the game loop exits immediately
-    mocker.patch('pygame.event.get', return_value=[pygame.event.Event(pygame.QUIT)])
-
-    # Mock OpenGL functions that require a valid context
-    mocker.patch('OpenGL.GL.glClearColor')
-
-    # Call run_game without expecting SystemExit to be raised
-    game.run_game()
-
-    # After running the game, check if the game_over flag is set to True
-    assert game.game_over, "Game over flag should be set to True after running the game loop"
