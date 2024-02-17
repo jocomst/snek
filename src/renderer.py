@@ -9,8 +9,17 @@ class Renderer:
         pass
 
     def initialize_scene(self):
-        # Set the scene's background color.
-        glClearColor(0.5, 0.5, 0.5, 1.0)  # Matches the test expectation
+    # Initialize other aspects of the scene that do not involve direct OpenGL calls
+    # For example, setting up initial positions of objects, initializing game state, etc.
+    
+    # Note: Since we're not using glClearColor, consider alternatives for background color
+    # This could involve drawing a full-screen quad as the first step in your rendering loop
+    # or adjusting the render logic to include a background texture or color in another way.
+
+    # Setup initial OpenGL settings that don't cause issues
+        glEnable(GL_DEPTH_TEST)  # Example of enabling depth testing if needed for 3D rendering
+
+    # Other OpenGL initialization code that's safe to run can go here
 
     def setup_camera(self):
         # Setup the camera with a perspective projection
