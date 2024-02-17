@@ -47,7 +47,8 @@ class SnakeGame:
 
     def run_game(self): 
         # Initialize OpenGL settings
-        # self.renderer.initialize_scene()
+        pygame.display.set_mode((800, 600), pygame.DOUBLEBUF | pygame.OPENGL)
+        self.renderer.initialize_scene()
         # glEnable(GL_DEPTH_TEST)  # Enable depth testing
 
         while not self.game_over:
