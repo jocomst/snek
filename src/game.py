@@ -47,8 +47,8 @@ class SnakeGame:
 
     def run_game(self): 
         # Initialize OpenGL settings
-        self.renderer.initialize_scene()
-        glEnable(GL_DEPTH_TEST)  # Enable depth testing
+        # self.renderer.initialize_scene()
+        # glEnable(GL_DEPTH_TEST)  # Enable depth testing
 
         while not self.game_over:
             for event in pygame.event.get():
@@ -58,7 +58,7 @@ class SnakeGame:
                     # Handle snake movement here (adapted for 3D if necessary)
 
                         # Clear the screen and depth buffer
-                    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+                    # glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
                         # Setup the camera for each frame
                     self.renderer.setup_camera()
