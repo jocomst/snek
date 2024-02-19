@@ -45,10 +45,14 @@ class SnakeGame:
         mesg = self.font_style.render(msg, True, color)
         self.game_display.blit(mesg, [self.width / 6, self.height / 3])
 
-    def run_game(self): 
+    def run_game(self):
         # Initialize OpenGL settings
         pygame.display.set_mode((800, 600), pygame.DOUBLEBUF | pygame.OPENGL)
+        
+        # Initialize the scene, camera, and lighting
         self.renderer.initialize_scene()
+        self.renderer.setup_camera()
+        self.renderer.setup_lighting()
 
         while not self.game_over:
             for event in pygame.event.get():
@@ -56,25 +60,23 @@ class SnakeGame:
                     self.game_over = True
                 if event.type == pygame.KEYDOWN:
                     # Handle snake movement here (adapted for 3D if necessary)
+                    pass  # Replace with your snake movement code
 
-                        # Clear the screen and depth buffer
-                    # glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+            # Clear the screen and depth buffer
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-                        # Setup the camera for each frame
-                    self.renderer.setup_camera()
+            # Draw a green triangle
+            self.renderer.draw_triangle()
 
-                        # Render a 3D scene here
-                        # For example, setup lighting (if you haven't already)
-                    self.renderer.setup_lighting()
+            # Swap buffers to display the scene
+            pygame.display.flip()
 
-                        # Draw a flat plane (You'll need to implement this method)
-                    self.renderer.draw_triangle()
+            # Cap the frame rate
+            self.clock.tick(self.snake_speed)
 
-                        # Swap buffers to display the scene
-                    pygame.display.flip()
-                    self.clock.tick(self.snake_speed)
+        # Make sure to call pygame.quit() after exiting the main loop
+        pygame.quit()
 
-                    pygame.quit()
 
     def handle_snake_movement(self, event):
         if event.key == pygame.K_LEFT:
