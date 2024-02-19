@@ -49,7 +49,6 @@ class SnakeGame:
         # Initialize OpenGL settings
         pygame.display.set_mode((800, 600), pygame.DOUBLEBUF | pygame.OPENGL)
         self.renderer.initialize_scene()
-        # glEnable(GL_DEPTH_TEST)  # Enable depth testing
 
         while not self.game_over:
             for event in pygame.event.get():
@@ -69,7 +68,7 @@ class SnakeGame:
                     self.renderer.setup_lighting()
 
                         # Draw a flat plane (You'll need to implement this method)
-                    self.renderer.draw_plane()
+                    self.renderer.draw_triangle()
 
                         # Swap buffers to display the scene
                     pygame.display.flip()

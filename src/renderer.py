@@ -18,6 +18,7 @@ class Renderer:
 
     # Setup initial OpenGL settings that don't cause issues
         glEnable(GL_DEPTH_TEST)  # Example of enabling depth testing if needed for 3D rendering
+        
 
     # Other OpenGL initialization code that's safe to run can go here
 
@@ -67,6 +68,18 @@ class Renderer:
             self._load_3ds(file_path)
         else:
             raise ValueError("Unsupported file format")
+        
+    def draw_triangle(self):
+        """Draw a green triangle centered at the origin."""
+        glBegin(GL_TRIANGLES)  # Start drawing a triangle
+        glColor3f(0.0, 1.0, 0.0)  # Set the color to green
+        
+        # Define the 3 vertices of the triangle
+        glVertex3f(-0.5, -0.5, 0)  # Bottom Left
+        glVertex3f(0.5, -0.5, 0)   # Bottom Right
+        glVertex3f(0.0, 0.5, 0)    # Top Middle
+
+        glEnd()  # End drawing the triangle
         
     def _load_obj(self, file_path):
         # A very simple OBJ file loader implementation
