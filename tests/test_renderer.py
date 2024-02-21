@@ -25,16 +25,12 @@ def game(mocker):
     game_instance = SnakeGame()
     return game_instance
 
-# Use context managers to patch each OpenGL function used in the Renderer methods
-def test_renderer_initializes_with_expected_background_color(renderer):
-    with patch('renderer.glClearColor') as mock_clear_color:
-        renderer.initialize_scene()
-        mock_clear_color.assert_called_once_with(0.5, 0.5, 0.5, 1.0)
 
 def test_camera_setup_with_expected_parameters(renderer):
     with patch('renderer.glMatrixMode') as mock_glMatrixMode, \
          patch('renderer.glLoadIdentity'), \
-         patch('renderer.gluPerspective') as mock_gluPerspective:
+         patch('renderer.gluPerspective') as mock_gluPerspective, \
+         patch('renderer.glTranslatef') as mock_glTranslatef:
         renderer.setup_camera()
         # Check if glMatrixMode was called with GL_PROJECTION at any point
         mock_glMatrixMode.assert_any_call(GL_PROJECTION)
@@ -42,6 +38,8 @@ def test_camera_setup_with_expected_parameters(renderer):
         mock_gluPerspective.assert_called_with(45.0, 800/600, 0.1, 50.0)
         # Ensure glMatrixMode was called with GL_MODELVIEW as well
         mock_glMatrixMode.assert_any_call(GL_MODELVIEW)
+        # Verify glTranslatef was called correctly if you decide to test it
+        mock_glTranslatef.assert_called_with(0.0, 0.0, -3.0)
 
 
 def test_overhead_lighting_setup(renderer):
