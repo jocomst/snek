@@ -27,9 +27,14 @@ class Renderer:
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         aspect_ratio = 800 / 600  # Assuming a window size of 800x600 for this example
-        gluPerspective(45.0, aspect_ratio, 0.1, 50.0)  # Matches the test expectation
+        gluPerspective(45.0, aspect_ratio, 0.1, 50.0)  # Field of view, aspect ratio, near clip, far clip
+
+        # Switch to modelview matrix to set camera position and orientation
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
+        # Move the camera back so the objects can be seen
+        glTranslatef(0.0, 0.0, -3.0)
+
         
     def draw_plane(self, width=20, length=20, color=(0.5, 0.75, 0.5)):
         """Draw a flat plane centered at the origin with specified width and length."""
