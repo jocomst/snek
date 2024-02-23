@@ -1,7 +1,6 @@
 import pytest
 import os
 import sys
-import pygame
 from OpenGL.GL import *
 from unittest.mock import mock_open, patch
 
@@ -74,5 +73,34 @@ def test_renderer_adds_model_from_obj_file(renderer):
         mock_glEnd.assert_called_once()
         assert mock_glVertex3fv.call_count == 4
 
+def test_load_texture(renderer):
+    test_texture_path = './models/grassTexture.jpg'
+    
+    # Mock glGenTextures to return a fake texture ID
+    with patch('OpenGL.GL.glGenTextures', return_value=1) as mock_glGenTextures, \
+         patch('OpenGL.GL.glBindTexture') as mock_glBindTexture, \
+         patch('OpenGL.GL.glTexParameteri'), \
+         patch('OpenGL.GL.glTexImage2D'), \
+         patch('PIL.Image.open') as mock_open:
+        
+        # Mock the image object and its methods
+        mock_image = mock_open.return_value
+        mock_image.convert.return_value = mock_image
+        mock_image.tobytes.return_value = b'test bytes'
+        mock_image.width = 256
+        mock_image.height = 256
+        
+        # Call the load_texture method
+        texture_id = renderer.load_texture(test_texture_path)
+        
+        # Ensure a texture ID was generated
+        assert texture_id == 1
+        mock_glGenTextures.assert_called_once_with(1)
+        
+        # Check that glBindTexture was called to bind and unbind the texture
+        assert mock_glBindTexture.call_count == 2
+        
+        # Ensure the texture parameters and image data were set correctly
+        mock_glBindTexture.assert_any_call(GL_TEXTURE_2D, texture_id)
 
 # Similar test can be created for 3DS files, with appropriate mock data and assertions
