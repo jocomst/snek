@@ -85,6 +85,20 @@ class Renderer:
         glVertex3f(0.0, 0.5, 0)    # Top Middle
 
         glEnd()  # End drawing the triangle
+    
+    def draw_square(self):
+        """Draw a flat square centered at the origin."""
+        glBegin(GL_QUADS)  # Start drawing a quadrilateral
+
+        glColor3f(0.0, 1.0, 0.0)  # Set the color to green for the square
+
+        # Define the 4 vertices of the square
+        glVertex3f(-0.5, -0.5, 0)  # Bottom Left
+        glVertex3f(0.5, -0.5, 0)   # Bottom Right
+        glVertex3f(0.5, 0.5, 0)    # Top Right
+        glVertex3f(-0.5, 0.5, 0)   # Top Left
+
+        glEnd()  # End drawing the quadrilateral
         
     def _load_obj(self, file_path):
         # A very simple OBJ file loader implementation

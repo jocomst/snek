@@ -66,7 +66,7 @@ class SnakeGame:
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
             # Draw a green triangle
-            self.renderer.draw_triangle()
+            self.renderer.draw_square()
 
             # Swap buffers to display the scene
             pygame.display.flip()
