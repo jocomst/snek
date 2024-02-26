@@ -87,19 +87,36 @@ class Renderer:
 
         glEnd()  # End drawing the triangle
     
-    def draw_square(self):
-        """Draw a flat square centered at the origin."""
-        glBegin(GL_QUADS)  # Start drawing a quadrilateral
-
-        glColor3f(0.0, 1.0, 0.0)  # Set the color to green for the square
-
-        # Define the 4 vertices of the square
+    def draw_square(self, texture_id=None):
+        """Draw a flat square centered at the origin. Apply a texture if texture_id is provided."""
+        if texture_id is not None:
+            glEnable(GL_TEXTURE_2D)
+            glBindTexture(GL_TEXTURE_2D, texture_id)
+        
+        glBegin(GL_QUADS)
+        
+        if texture_id is not None:
+            # Define texture coordinates along with each vertex
+            glTexCoord2f(0.0, 0.0)
         glVertex3f(-0.5, -0.5, 0)  # Bottom Left
+        
+        if texture_id is not None:
+            glTexCoord2f(1.0, 0.0)
         glVertex3f(0.5, -0.5, 0)   # Bottom Right
+        
+        if texture_id is not None:
+            glTexCoord2f(1.0, 1.0)
         glVertex3f(0.5, 0.5, 0)    # Top Right
+        
+        if texture_id is not None:
+            glTexCoord2f(0.0, 1.0)
         glVertex3f(-0.5, 0.5, 0)   # Top Left
 
-        glEnd()  # End drawing the quadrilateral
+        glEnd()
+
+        if texture_id is not None:
+            glBindTexture(GL_TEXTURE_2D, 0)
+            glDisable(GL_TEXTURE_2D)
         
     def _load_obj(self, file_path):
         # A very simple OBJ file loader implementation
