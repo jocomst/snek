@@ -34,7 +34,7 @@ class Renderer:
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         # Move the camera back so the objects can be seen
-        glTranslatef(0.0, 0.0, -3.0)
+        glTranslatef(0.0, 0.0, -1.5)
 
         
     def draw_plane(self, width=20, length=20, color=(0.5, 0.75, 0.5)):
