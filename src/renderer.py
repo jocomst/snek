@@ -2,6 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import os
 from PIL import Image
+from cube_data import vertices as cube_vertices, faces as cube_faces
 
 class Renderer:
     def __init__(self):
@@ -168,3 +169,17 @@ class Renderer:
             glBindTexture(GL_TEXTURE_2D, 0)
             
             return texture_id
+
+    def draw_segment(self, position, size=0.5):
+        """Draw a cube segment of the snake at the given position."""
+        glPushMatrix()
+        glTranslatef(position[0], position[1], position[2])
+        glScalef(size, size, size)  # Scale cube to the size of the snake segment
+
+        glBegin(GL_QUADS)
+        for face in cube_faces:
+            for vertex_index in face:
+                glVertex3fv(cube_vertices[vertex_index])
+        glEnd()
+
+        glPopMatrix()
