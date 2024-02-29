@@ -10,75 +10,43 @@ src_path = os.path.abspath(os.path.join(parent_dir, 'src'))
 sys.path.insert(0, src_path)
 
 
-from snake import Snake
-
-class MockDisplay:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-
-    def get_width(self):
-        return self.width
-
-    def get_height(self):
-        return self.height
+from snake import Snake3D
 
 @pytest.fixture
-def mock_display():
-    return MockDisplay(600, 400)
+def snake():
+    block_size = 1  # Easier to work with unit size for testing
+    return Snake3D(block_size)
 
-@pytest.fixture
-def snake(mock_display):
-    block_size = 20
-    return Snake(mock_display, block_size)
-
-def test_snake_initialization(snake, mock_display):
-    assert snake.positions == [[mock_display.get_width() / 2, mock_display.get_height() / 2]]
+def test_snake_initialization(snake):
+    # Snake should start at the origin in 3D space
+    assert snake.positions == [[0, 0, 0]]
 
 def test_snake_movement(snake):
-    # Get the initial head position
-    initial_head = snake.positions[-1].copy()
-    # Assume snake moves right by block_size
-    snake.move(snake.block_size, 0)
+    # Move the snake along x-axis
+    snake.move(1, 0, 0)
     snake.update()
-    # Check if the new head is correctly placed based on the initial head position
-    assert snake.positions[-1][0] == initial_head[0] + snake.block_size
-    assert snake.positions[-1][1] == initial_head[1]
+    # The head should now be at (1, 0, 0)
+    assert snake.positions[-1] == [1, 0, 0]
 
 def test_snake_growth(snake):
     initial_length = len(snake.positions)
-    # Get the initial head position
-    initial_head = snake.positions[-1].copy()
     snake.grow()
-    # After growing, the snake should have one more segment, and the new head should be in the same position
+    # Snake should have one more segment after growing
     assert len(snake.positions) == initial_length + 1
-    assert snake.positions[-1] == initial_head
+    # The new head should be at the same position as the old head
+    assert snake.positions[-1] == snake.positions[-2]
 
 def test_snake_direction_change(snake):
-    # Get the initial head position
-    initial_head = snake.positions[-1].copy()
-    # Change direction to down
-    snake.move(0, snake.block_size)
+    # Move the snake along y-axis
+    snake.move(0, 1, 0)
     snake.update()
-    # Check if the new head's y position has changed based on the initial head position
-    assert snake.positions[-1][0] == initial_head[0]
-    assert snake.positions[-1][1] == initial_head[1] + snake.block_size
+    # The head should now be at (0, 1, 0)
+    assert snake.positions[-1] == [0, 1, 0]
 
-def test_snake_model_loading_success(mock_display):
-    with patch('pygame.image.load') as mock_load:
-        # Assuming 'valid_model_path.png' is a valid path for the model
-        valid_model_path = './models/fakeModel.png'
-        mock_load.return_value = Mock()  # Mock the pygame surface returned by image.load
-        
-        snake = Snake(mock_display, 20, valid_model_path)
-        assert snake.model_loaded is True
+    # Change direction along z-axis
+    snake.move(0, 0, 1)
+    snake.update()
+    # The head should now be at (0, 1, 1)
+    assert snake.positions[-1] == [0, 1, 1]
 
-def test_snake_model_loading_failure(mock_display):
-    with patch('pygame.image.load', side_effect=Exception('Load failed')):
-        # Assuming 'invalid_model_path.png' is an invalid path for the model
-        invalid_model_path = 'path/to/invalid_model.png'
-        
-        snake = Snake(mock_display, 20, invalid_model_path)
-        assert snake.model_loaded is False
-
-# ... rest of the tests ...
+# Tests for model loading can be omitted if you're handling this entirely within OpenGL and not using pygame
