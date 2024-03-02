@@ -1,5 +1,8 @@
+import renderer
+
 class Snake3D:
     def __init__(self, block_size, model_path=None):
+        self.renderer = renderer
         self.color = (0, 0, 0)  # Black, though this may not be used in 3D
         self.block_size = block_size
         # Initialize with a position in 3D space, with z being up
