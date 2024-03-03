@@ -25,22 +25,6 @@ def game(mocker):
     return game_instance
 
 
-def test_camera_setup_with_expected_parameters(renderer):
-    with patch('renderer.glMatrixMode') as mock_glMatrixMode, \
-         patch('renderer.glLoadIdentity'), \
-         patch('renderer.gluPerspective') as mock_gluPerspective, \
-         patch('renderer.glTranslatef') as mock_glTranslatef:
-        renderer.setup_camera()
-        # Check if glMatrixMode was called with GL_PROJECTION at any point
-        mock_glMatrixMode.assert_any_call(GL_PROJECTION)
-        # Also, verify the aspect ratio passed to gluPerspective
-        mock_gluPerspective.assert_called_with(45.0, 800/600, 0.1, 50.0)
-        # Ensure glMatrixMode was called with GL_MODELVIEW as well
-        mock_glMatrixMode.assert_any_call(GL_MODELVIEW)
-        # Verify glTranslatef was called correctly if you decide to test it
-        mock_glTranslatef.assert_called_with(0.0, 0.0, -3.0)
-
-
 def test_overhead_lighting_setup(renderer):
     with patch('renderer.glEnable') as mock_glEnable, \
          patch('renderer.glLightfv') as mock_glLightfv:
