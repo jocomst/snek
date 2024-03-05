@@ -8,6 +8,8 @@ class Renderer:
     def __init__(self):
         # This could include initializing variables that keep track of
         # the renderer state, like the camera position or lighting settings.
+        # ... other initialization code ...
+        self.width, self.height = 800, 600  # Set these to your desired window size
         pass
 
     def initialize_scene(self):
@@ -25,17 +27,21 @@ class Renderer:
     # Other OpenGL initialization code that's safe to run can go here
 
     def setup_camera(self):
-        # Setup the camera with a perspective projection
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        aspect_ratio = 800 / 600  # Assuming a window size of 800x600 for this example
-        gluPerspective(45.0, aspect_ratio, 0.1, 50.0)  # Field of view, aspect ratio, near clip, far clip
+        # Decrease the field of view angle (if necessary)
+        gluPerspective(30.0, float(self.width) / self.height, 0.1, 100.0)
 
-        # Switch to modelview matrix to set camera position and orientation
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-        # Move the camera back so the objects can be seen
-        glTranslatef(0.0, 0.0, -1.5)
+
+        # Move the camera closer by decreasing the Z value
+        eyeX, eyeY, eyeZ = 2, 2, 1  # Assuming the camera was originally at 10, 10, 10
+
+        centerX, centerY, centerZ = 0, 0, 0  # Look at the center of the scene
+        upX, upY, upZ = 0, 0, 1  # Up is along the Z-axis
+
+        gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ)
 
         
     def draw_plane(self, width=20, length=20, color=(0.5, 0.75, 0.5)):
