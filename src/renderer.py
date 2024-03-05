@@ -29,19 +29,19 @@ class Renderer:
     def setup_camera(self):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        # Decrease the field of view angle (if necessary)
+        # Decrease the field of view angle for a zoomed-in effect
         gluPerspective(30.0, float(self.width) / self.height, 0.1, 100.0)
 
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
-        # Move the camera closer by decreasing the Z value
-        eyeX, eyeY, eyeZ = 2, 2, 1  # Assuming the camera was originally at 10, 10, 10
-
+        # Adjust the camera position to zoom in and rotate the scene towards the viewer
+        eyeX, eyeY, eyeZ = 2, 2, 1  # Closer and more centered
         centerX, centerY, centerZ = 0, 0, 0  # Look at the center of the scene
         upX, upY, upZ = 0, 0, 1  # Up is along the Z-axis
 
         gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ)
+
 
         
     def draw_plane(self, width=20, length=20, color=(0.5, 0.75, 0.5)):
