@@ -36,7 +36,7 @@ class Renderer:
         glLoadIdentity()
 
         # Adjust the camera position to zoom in and rotate the scene towards the viewer
-        eyeX, eyeY, eyeZ = 2, 2, 1  # Closer and more centered
+        eyeX, eyeY, eyeZ = 1, 2, 1  # Closer and more centered
         centerX, centerY, centerZ = 0, 0, 0  # Look at the center of the scene
         upX, upY, upZ = 0, 0, 1  # Up is along the Z-axis
 
