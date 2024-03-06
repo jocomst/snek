@@ -27,4 +27,27 @@ class Snake3D:
             # Here the renderer's draw_cube method is used to draw each segment of the snake
             self.renderer.draw_cube(position, self.block_size, self.color)
 
+    def move(self, x_change, y_change, z_change):
+        # Update movement direction
+        self.x_change = x_change
+        self.y_change = y_change
+        self.z_change = z_change
+
+    def update(self):
+        # Calculate new head position based on the current direction
+        head_x, head_y, head_z = self.positions[-1]
+        new_head = [head_x + self.x_change, head_y + self.y_change, head_z + self.z_change]
+        
+        # Add the new head to the snake's body
+        self.positions.append(new_head)
+        
+        # Remove the last segment of the tail
+        self.positions.pop(0)
+
+    def grow(self):
+        # When growing, we don't remove the tail segment
+        head_x, head_y, head_z = self.positions[-1]
+        new_head = [head_x + self.x_change, head_y + self.y_change, head_z + self.z_change]
+        self.positions.append(new_head)
+
 # Rest of your class methods remains unchanged
