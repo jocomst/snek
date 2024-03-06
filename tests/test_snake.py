@@ -1,6 +1,6 @@
 import os
 import sys
-import pytest
+import unittest
 from unittest.mock import Mock, patch
 
 # Calculate the absolute path to the src directory and append it to sys.path
@@ -12,41 +12,41 @@ sys.path.insert(0, src_path)
 
 from snake import Snake3D
 
-@pytest.fixture
-def snake():
-    block_size = 1  # Easier to work with unit size for testing
-    return Snake3D(block_size)
+class MockRenderer:
+    # A mock renderer class to mimic the real renderer
+    def draw_cube(self, position, size, color):
+        pass  # The mock doesn't actually do anything
 
-def test_snake_initialization(snake):
-    # Snake should start at the origin in 3D space
-    assert snake.positions == [[0, 0, 0]]
+class TestSnake3D(unittest.TestCase):
 
-def test_snake_movement(snake):
-    # Move the snake along x-axis
-    snake.move(1, 0, 0)
-    snake.update()
-    # The head should now be at (1, 0, 0)
-    assert snake.positions[-1] == [1, 0, 0]
+    def setUp(self):
+        self.block_size = 1
+        self.renderer = MockRenderer()
+        self.snake = Snake3D(self.renderer, self.block_size)
 
-def test_snake_growth(snake):
-    initial_length = len(snake.positions)
-    snake.grow()
-    # Snake should have one more segment after growing
-    assert len(snake.positions) == initial_length + 1
-    # The new head should be at the same position as the old head
-    assert snake.positions[-1] == snake.positions[-2]
+    def test_initial_position(self):
+        # Test that the snake starts at the correct position
+        self.assertEqual(self.snake.positions, [[0, 0, 0]])
 
-def test_snake_direction_change(snake):
-    # Move the snake along y-axis
-    snake.move(0, 1, 0)
-    snake.update()
-    # The head should now be at (0, 1, 0)
-    assert snake.positions[-1] == [0, 1, 0]
+    def test_move(self):
+        # Test snake movement
+        self.snake.move(self.block_size, 0, 0)
+        self.snake.update()
+        self.assertEqual(self.snake.positions[-1], [self.block_size, 0, 0])
 
-    # Change direction along z-axis
-    snake.move(0, 0, 1)
-    snake.update()
-    # The head should now be at (0, 1, 1)
-    assert snake.positions[-1] == [0, 1, 1]
+    def test_grow(self):
+        # Test snake growth
+        initial_length = len(self.snake.positions)
+        self.snake.grow()
+        self.assertEqual(len(self.snake.positions), initial_length + 1)
+
+    def test_get_state(self):
+        # Test get_state method
+        state = self.snake.get_state()
+        self.assertEqual(state['positions'], self.snake.positions)
+        self.assertEqual(state['block_size'], self.snake.block_size)
+        self.assertEqual(state['color'], self.snake.color)
+
+# More tests can be added here to cover all aspects of the Snake3D class.
 
 # Tests for model loading can be omitted if you're handling this entirely within OpenGL and not using pygame

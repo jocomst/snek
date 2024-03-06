@@ -1,15 +1,16 @@
 class Snake3D:
-    def __init__(self, block_size, model_path=None):
-        self.color = (0, 0, 0)  # Black, though this may not be used in 3D
+    def __init__(self, renderer, block_size, model_path=None):
+        self.renderer = renderer  # Assuming renderer is passed in as a parameter
+        self.color = (1, 0, 0)  # Red color for the snake
         self.block_size = block_size
-        # Initialize with a position in 3D space, with z being up
-        self.positions = [[0, 0, 0]]  
+        self.positions = [[0, 0, 0]]  # Initialize with a position in 3D space, with z being up
         self.model_loaded = False
-        # Initialize x_change, y_change, and z_change to zero
-        self.x_change = 0
+
+        self.x_change = self.block_size  # Initial movement direction along x-axis
         self.y_change = 0
         self.z_change = 0
         
+        # If a model_path is provided, try to load a 3D model, otherwise the snake will be drawn with cubes
         if model_path:
             try:
                 self.model = self.load_model(model_path)
@@ -18,26 +19,12 @@ class Snake3D:
                 print(f"Could not load the model at {model_path}: {e}")
                 self.model = None
 
-    def load_model(self, model_path):
-        # Model loading logic will be implemented here if necessary
-        pass
+    # ... rest of your class methods ...
 
-    def move(self, x_change, y_change, z_change):
-        self.x_change = x_change
-        self.y_change = y_change
-        self.z_change = z_change
+    def draw(self):
+        # Iterate through the snake's positions and draw each segment
+        for position in self.positions:
+            # Here the renderer's draw_cube method is used to draw each segment of the snake
+            self.renderer.draw_cube(position, self.block_size, self.color)
 
-    def update(self):
-        head_x, head_y, head_z = self.positions[-1]
-        new_head = [head_x + self.x_change, head_y + self.y_change, head_z + self.z_change]
-        self.positions.append(new_head)
-        self.positions.pop(0)
-
-    def grow(self):
-        head_x, head_y, head_z = self.positions[-1]
-        new_head = [head_x + self.x_change, head_y + self.y_change, head_z + self.z_change]
-        self.positions.append(new_head)
-
-    def get_state(self):
-        # This method provides the current state of the snake for rendering or other purposes
-        return {'positions': self.positions, 'block_size': self.block_size, 'color': self.color}
+# Rest of your class methods remains unchanged

@@ -1,5 +1,6 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from OpenGL.GLUT import *
 import os
 from PIL import Image
 from cube_data import vertices as cube_vertices, faces as cube_faces
@@ -188,4 +189,13 @@ class Renderer:
                 glVertex3fv(cube_vertices[vertex_index])
         glEnd()
 
+        glPopMatrix()
+
+    def draw_cube(self, position, size, color):
+        # This method would contain OpenGL calls to draw a cube at the given position
+        x, y, z = position
+        glPushMatrix()
+        glColor3f(*color)
+        glTranslate(x, y, z)
+        glutSolidCube(size)
         glPopMatrix()
