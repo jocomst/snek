@@ -50,4 +50,12 @@ class Snake3D:
         new_head = [head_x + self.x_change, head_y + self.y_change, head_z + self.z_change]
         self.positions.append(new_head)
 
+    def get_state(self):
+        # This method provides the current state of the snake for rendering or other purposes
+        return {
+            'positions': self.positions,
+            'block_size': self.block_size,
+            'color': self.color
+        }
+
 # Rest of your class methods remains unchanged
