@@ -3,13 +3,14 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from renderer import Renderer
+from snake import Snake3D
 
 class SnakeGame:
     def __init__(self):
         pygame.init()
 
         # Game Configuration
-        self.width, self.height = 800, 600  # Updated for consistency with OpenGL window
+        self.width, self.height = 800, 600
 
         # Game Initialization
         self.game_display = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL)
@@ -17,7 +18,10 @@ class SnakeGame:
         self.clock = pygame.time.Clock()
 
         # Initialize Renderer
-        self.renderer = Renderer()  # This line initializes the renderer property
+        self.renderer = Renderer(self.width, self.height)  # Pass width and height to Renderer
+
+        # Initialize Snake
+        self.snake = Snake3D(self.renderer, block_size=1)  # Block size set to 1 for example
 
         # Game State
         self.game_over = False

@@ -6,11 +6,9 @@ from PIL import Image
 from cube_data import vertices as cube_vertices, faces as cube_faces
 
 class Renderer:
-    def __init__(self):
-        # This could include initializing variables that keep track of
-        # the renderer state, like the camera position or lighting settings.
-        # ... other initialization code ...
-        self.width, self.height = 800, 600  # Set these to your desired window size
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height  # Set these to your desired window size
         pass
 
     def initialize_scene(self):
