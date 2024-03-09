@@ -15,7 +15,9 @@ from game import SnakeGame
 
 @pytest.fixture
 def renderer():
-    return Renderer()
+    width = 800  # Example width value
+    height = 600  # Example height value
+    return Renderer(width, height)
 
 @pytest.fixture
 def game(mocker):
