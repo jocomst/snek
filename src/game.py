@@ -39,6 +39,15 @@ class SnakeGame:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.game_over = True
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        self.snake.move(0, self.block_size, 0)
+                    elif event.key == pygame.K_DOWN:
+                        self.snake.move(0, -self.block_size, 0)
+                    elif event.key == pygame.K_LEFT:
+                        self.snake.move(-self.block_size, 0, 0)
+                    elif event.key == pygame.K_RIGHT:
+                        self.snake.move(self.block_size, 0, 0)
 
             # Clear the screen and depth buffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -46,11 +55,15 @@ class SnakeGame:
             # Draw the grass texture
             self.renderer.draw_square(self.grass_texture_id)
 
+            # Update and draw the snake
+            self.snake.update()
+            self.snake.draw()
+
             # Swap buffers to display the scene
             pygame.display.flip()
 
             # Cap the frame rate
-            self.clock.tick(60)  # Set to 60 or any other appropriate framerate
+            self.clock.tick(60)
 
         # Clean up and close the game properly
         pygame.quit()
