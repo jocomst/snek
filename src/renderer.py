@@ -190,10 +190,32 @@ class Renderer:
         glPopMatrix()
 
     def draw_cube(self, position, size, color):
-        # This method would contain OpenGL calls to draw a cube at the given position
         x, y, z = position
+
+        # Define the vertices of the cube
+        vertices = [
+            [0, 0, 0], [0, 0, size], [0, size, size], [0, size, 0],
+            [size, 0, 0], [size, 0, size], [size, size, size], [size, size, 0]
+        ]
+
+        # Define the 6 faces of the cube, each face has 4 vertices (quads)
+        faces = [
+            [0, 1, 2, 3],  # Left
+            [4, 5, 6, 7],  # Right
+            [0, 1, 5, 4],  # Bottom
+            [3, 2, 6, 7],  # Top
+            [0, 3, 7, 4],  # Front
+            [1, 2, 6, 5],  # Back
+        ]
+
         glPushMatrix()
-        glColor3f(*color)
-        glTranslate(x, y, z)
-        glutSolidCube(size)
+        glColor3f(*color)  # Set the color
+        glTranslate(x, y, z)  # Translate the cube to its position
+
+        glBegin(GL_QUADS)
+        for face in faces:
+            for vertex in face:
+                glVertex3fv(vertices[vertex])
+        glEnd()
+
         glPopMatrix()
