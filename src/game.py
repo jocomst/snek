@@ -42,13 +42,13 @@ class SnakeGame:
                     self.game_over = True
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
-                        self.snake.move(0, self.block_size, 0)
+                        self.snake.move(0, self.snake.block_size, 0)
                     elif event.key == pygame.K_DOWN:
-                        self.snake.move(0, -self.block_size, 0)
+                        self.snake.move(0, -self.snake.block_size, 0)
                     elif event.key == pygame.K_LEFT:
-                        self.snake.move(-self.block_size, 0, 0)
+                        self.snake.move(-self.snake.block_size, 0, 0)
                     elif event.key == pygame.K_RIGHT:
-                        self.snake.move(self.block_size, 0, 0)
+                        self.snake.move(self.snake.block_size, 0, 0)
 
             # Clear the screen and depth buffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
