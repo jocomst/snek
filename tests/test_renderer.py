@@ -12,6 +12,7 @@ sys.path.insert(0, src_path)
 
 from renderer import Renderer
 from game import SnakeGame
+from snake import Snake3D
 
 @pytest.fixture
 def renderer():
@@ -26,6 +27,11 @@ def game(mocker):
     game_instance = SnakeGame()
     return game_instance
 
+@pytest.fixture
+def snake(renderer):
+    block_size = 20  # Choose a visible size for the snake
+    return Snake3D(renderer, block_size)
+
 
 def test_overhead_lighting_setup(renderer):
     with patch('renderer.glEnable') as mock_glEnable, \
@@ -35,7 +41,13 @@ def test_overhead_lighting_setup(renderer):
         mock_glEnable.assert_any_call(GL_LIGHT0)
         mock_glLightfv.assert_called_with(GL_LIGHT0, GL_POSITION, [0.0, 1.0, 1.0, 1.0])
 
-from unittest.mock import patch, mock_open
+# Test that draw_cube is called correctly when the snake is drawn
+def test_snake_rendering(snake, renderer):
+    with patch('renderer.Renderer.draw_cube') as mock_draw_cube:
+        snake.draw()
+        assert mock_draw_cube.call_count == len(snake.positions)
+        for position in snake.positions:
+            mock_draw_cube.assert_any_call(position, snake.block_size, snake.color)
 
 def test_renderer_adds_model_from_obj_file(renderer):
     with patch('renderer.glGenLists', return_value=1) as mock_glGenLists, \
