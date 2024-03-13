@@ -22,7 +22,7 @@ class SnakeGame:
         self.renderer = Renderer(self.width, self.height)  # Pass width and height to Renderer
 
         # Initialize Snake
-        self.snake = Snake3D(self.renderer, block_size=1)  # Block size set to 1 for example
+        self.snake = Snake3D(self.renderer, block_size=20)  # Block size set to 1 for example
 
         # Game State
         self.game_over = False
