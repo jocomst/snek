@@ -28,15 +28,14 @@ class Renderer:
     def setup_camera(self):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        # Decrease the field of view angle for a zoomed-in effect
-        gluPerspective(30.0, float(self.width) / self.height, 0.1, 100.0)
+        gluPerspective(45.0, float(self.width) / self.height, 0.1, 100.0)  # Slightly wider field of view
 
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
-        # Adjust the camera position to zoom in and rotate the scene towards the viewer
-        eyeX, eyeY, eyeZ = 1, 2, 1  # Closer and more centered
-        centerX, centerY, centerZ = 0, 0, 0  # Look at the center of the scene
+        # Position the camera further away
+        eyeX, eyeY, eyeZ = 20, 20, 20  # Adjust these values as needed
+        centerX, centerY, centerZ = 0, 0, 0  # Looking at the origin
         upX, upY, upZ = 0, 0, 1  # Up is along the Z-axis
 
         gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ)
@@ -64,16 +63,20 @@ class Renderer:
             raise ValueError("Unsupported file format")
         
     def draw_triangle(self):
-        """Draw a green triangle centered at the origin."""
+        """Draw a neon green wireframe triangle centered at the origin and above the square plane."""
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)  # Draw as wireframe
+        glColor3f(0, 1, 0)  # Neon green color
+
         glBegin(GL_TRIANGLES)  # Start drawing a triangle
-        glColor3f(0.0, 1.0, 0.0)  # Set the color to green
-        
-        # Define the 3 vertices of the triangle
-        glVertex3f(-0.5, -0.5, 0)  # Bottom Left
-        glVertex3f(0.5, -0.5, 0)   # Bottom Right
-        glVertex3f(0.0, 0.5, 0)    # Top Middle
+
+        # Define the 3 vertices of the triangle, half the previous size
+        glVertex3f(-5, -5, 0.1)  # Bottom Left, half the size of the previous square
+        glVertex3f(5, -5, 0.1)   # Bottom Right, half the size of the previous square
+        glVertex3f(0, 5, 0.1)    # Top Middle, half the size of the previous square
 
         glEnd()  # End drawing the triangle
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)  # Revert to default polygon mode
     
     def draw_square(self, texture_id=None):
         """Draw a flat square centered at the origin. Apply a texture if texture_id is provided."""
@@ -174,20 +177,23 @@ class Renderer:
     def draw_cube(self, position, size, color):
         x, y, z = position
 
-        # Define the vertices of the cube
+        # Define the vertices of the cube relative to the center position
+        half_size = size / 2
         vertices = [
-            [0, 0, 0], [0, 0, size], [0, size, size], [0, size, 0],
-            [size, 0, 0], [size, 0, size], [size, size, size], [size, size, 0]
+            [-half_size, -half_size, -half_size], [half_size, -half_size, -half_size],
+            [half_size, half_size, -half_size], [-half_size, half_size, -half_size],
+            [-half_size, -half_size, half_size], [half_size, -half_size, half_size],
+            [half_size, half_size, half_size], [-half_size, half_size, half_size]
         ]
 
         # Define the 6 faces of the cube, each face has 4 vertices (quads)
         faces = [
-            [0, 1, 2, 3],  # Left
-            [4, 5, 6, 7],  # Right
-            [0, 1, 5, 4],  # Bottom
-            [3, 2, 6, 7],  # Top
-            [0, 3, 7, 4],  # Front
-            [1, 2, 6, 5],  # Back
+            [0, 1, 2, 3],  # Bottom
+            [4, 5, 6, 7],  # Top
+            [0, 1, 5, 4],  # Front
+            [2, 3, 7, 6],  # Back
+            [0, 3, 7, 4],  # Left
+            [1, 2, 6, 5],  # Right
         ]
 
         glPushMatrix()
