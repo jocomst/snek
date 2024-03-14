@@ -41,24 +41,6 @@ class Renderer:
 
         gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ)
 
-
-        
-    def draw_plane(self, width=20, length=20, color=(0.5, 0.75, 0.5)):
-        """Draw a flat plane centered at the origin with specified width and length."""
-        half_width = width / 2
-        half_length = length / 2
-
-        glBegin(GL_QUADS)  # Start drawing a flat plane
-        glColor3fv(color)  # Set the color of the plane
-
-        # Define the 4 vertices of the plane
-        glVertex3f(-half_width, -half_length, 0)  # Bottom Left
-        glVertex3f(half_width, -half_length, 0)   # Bottom Right
-        glVertex3f(half_width, half_length, 0)    # Top Right
-        glVertex3f(-half_width, half_length, 0)   # Top Left
-
-        glEnd()  # End drawing the plane
-
     def setup_lighting(self):
         # Enable lighting and set up an overhead light.
         glEnable(GL_LIGHTING)
