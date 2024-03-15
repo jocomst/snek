@@ -54,11 +54,10 @@ class SnakeGame:
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
             # Draw the grass texture
-            # self.renderer.draw_square(self.grass_texture_id)
-            self.renderer.draw_triangle()
+            self.renderer.draw_square(self.grass_texture_id)
+            # self.renderer.draw_triangle()
 
             # Update and draw the snake
-            self.snake.update()
             self.snake.draw()
 
             # Swap buffers to display the scene

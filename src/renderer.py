@@ -34,7 +34,7 @@ class Renderer:
         glLoadIdentity()
 
         # Position the camera further away
-        eyeX, eyeY, eyeZ = 20, 20, 20  # Adjust these values as needed
+        eyeX, eyeY, eyeZ = 1, 1, 1  # Adjust these values as needed
         centerX, centerY, centerZ = 0, 0, 0  # Looking at the origin
         upX, upY, upZ = 0, 0, 1  # Up is along the Z-axis
 
@@ -178,7 +178,9 @@ class Renderer:
         x, y, z = position
 
         # Define the vertices of the cube relative to the center position
-        half_size = size / 2
+        # Modify the size of the cube here
+        new_size_factor = 0.05  # To make the cube a quarter of its current size
+        half_size = (size * new_size_factor) / 2
         vertices = [
             [-half_size, -half_size, -half_size], [half_size, -half_size, -half_size],
             [half_size, half_size, -half_size], [-half_size, half_size, -half_size],
