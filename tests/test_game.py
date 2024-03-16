@@ -32,4 +32,25 @@ def test_renderer_initialization(game):
     assert hasattr(game, 'renderer')
     assert game.renderer is not None
 
-    def
+def test_snake_initialization(game):
+    """Test if the Snake3D object is initialized correctly within SnakeGame."""
+    snake = game.snake  # Assuming SnakeGame initializes a Snake3D object as `self.snake`
+    
+    # Verify that the Snake3D object has been created
+    assert snake is not None
+    
+    # Check initial color of the snake is red
+    assert snake.color == (1, 0, 0), "Initial snake color should be red."
+    
+    # Check that the snake's initial position is at the origin
+    assert snake.positions == [[0, 0, 0]], "Initial snake position should be at the origin."
+    
+    # Check that the snake's initial block size is set correctly
+    expected_block_size = 1  # Update this value to match the initial block size you set in SnakeGame
+    assert snake.block_size == expected_block_size, f"Initial snake block size should be {expected_block_size}."
+    
+    # Check that the snake's initial movement direction is along the positive x-axis
+    assert snake.x_change == expected_block_size, "Initial snake x movement should equal the block size."
+    assert snake.y_change == 0, "Initial snake y movement should be 0."
+    assert snake.z_change == 0, "Initial snake z movement should be 0."
+
