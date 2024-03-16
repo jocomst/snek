@@ -31,3 +31,5 @@ def test_renderer_initialization(game):
     # This test assumes your game class now holds a renderer instance
     assert hasattr(game, 'renderer')
     assert game.renderer is not None
+
+    def
