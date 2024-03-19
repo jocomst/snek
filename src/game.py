@@ -42,13 +42,13 @@ class SnakeGame:
                     self.game_over = True
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
-                        self.snake.move(0, self.snake.block_size, 0)
+                        self.snake.move(0, self.snake.block_size, 0)  # Move up
                     elif event.key == pygame.K_DOWN:
-                        self.snake.move(0, -self.snake.block_size, 0)
+                        self.snake.move(0, -self.snake.block_size, 0)  # Move down
                     elif event.key == pygame.K_LEFT:
-                        self.snake.move(-self.snake.block_size, 0, 0)
+                        self.snake.move(-self.snake.block_size, 0, 0)  # Move left
                     elif event.key == pygame.K_RIGHT:
-                        self.snake.move(self.snake.block_size, 0, 0)
+                        self.snake.move(self.snake.block_size, 0, 0)  # Move right
 
             # Clear the screen and depth buffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -56,6 +56,9 @@ class SnakeGame:
             # Draw the grass texture
             self.renderer.draw_square(self.grass_texture_id)
             # self.renderer.draw_triangle()
+
+            # Update the snake's position based on its current direction
+            # self.snake.update()  
 
             # Update and draw the snake
             self.snake.draw()

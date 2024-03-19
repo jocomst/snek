@@ -28,10 +28,13 @@ class Snake3D:
             self.renderer.draw_cube(position, self.block_size, self.color)
 
     def move(self, x_change, y_change, z_change):
-        # Update movement direction
-        self.x_change = x_change
-        self.y_change = y_change
-        self.z_change = z_change
+        # Update movement direction only if it's not the opposite of the current direction
+        if (x_change * self.x_change) >= 0:
+            self.x_change = x_change
+        if (y_change * self.y_change) >= 0:
+            self.y_change = y_change
+        if (z_change * self.z_change) >= 0:
+            self.z_change = z_change
 
     def update(self):
         # Calculate new head position based on the current direction
