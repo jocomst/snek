@@ -13,6 +13,8 @@ class SnakeGame:
         # Game Configuration
         self.width, self.height = 800, 600
 
+        self.score = 0  # Initialize the score attribute
+
         # Game Initialization
         self.game_display = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL)
         pygame.display.set_caption('Snake Game')
@@ -71,6 +73,10 @@ class SnakeGame:
 
         # Clean up and close the game properly
         pygame.quit()
+
+    def update_score(self):
+        # Method to update the score
+        self.score += 1
 
 # To run the game
 if __name__ == "__main__":
