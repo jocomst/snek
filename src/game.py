@@ -29,6 +29,9 @@ class SnakeGame:
         # Game State
         self.game_over = False
 
+        # Game Score
+        self.score = 0
+
         # Load Grass Texture
         self.grass_texture_id = self.renderer.load_texture('./models/grassTexture.jpg')
 
@@ -36,6 +39,10 @@ class SnakeGame:
         self.renderer.initialize_scene()
         self.renderer.setup_camera()
         self.renderer.setup_lighting()
+
+    def update_score(self):
+        # Method to update the score
+        self.score += 1
 
     def run_game(self):
         while not self.game_over:
@@ -60,7 +67,7 @@ class SnakeGame:
             # self.renderer.draw_triangle()
 
             # Update the snake's position based on its current direction
-            # self.snake.update()  
+            self.snake.update()  
 
             # Update and draw the snake
             self.snake.draw()

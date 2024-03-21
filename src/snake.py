@@ -36,16 +36,29 @@ class Snake3D:
         if (z_change * self.z_change) >= 0:
             self.z_change = z_change
 
+    def is_within_boundaries(self, position):
+        # You'll need to define what the boundaries are for your game.
+        min_x, max_x = -10, 10  # Example boundaries
+        min_y, max_y = -10, 10  # Example boundaries
+        x, y, _ = position
+        return min_x <= x <= max_x and min_y <= y <= max_y
+
     def update(self):
         # Calculate new head position based on the current direction
         head_x, head_y, head_z = self.positions[-1]
         new_head = [head_x + self.x_change, head_y + self.y_change, head_z + self.z_change]
-        
-        # Add the new head to the snake's body
-        self.positions.append(new_head)
-        
-        # Remove the last segment of the tail
-        self.positions.pop(0)
+
+        # Check if the new head position is within the game boundaries
+        if self.is_within_boundaries(new_head):
+            # Add the new head to the snake's body
+            self.positions.append(new_head)
+            
+            # Remove the last segment of the tail
+            self.positions.pop(0)
+        else:
+            # If new head is out of boundaries, stop updating to prevent going off-screen
+            # This should probably be handled better, for example by setting a game over state
+            pass
 
     def grow(self):
         # When growing, we don't remove the tail segment
