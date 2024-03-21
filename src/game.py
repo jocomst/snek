@@ -67,7 +67,7 @@ class SnakeGame:
             # self.renderer.draw_triangle()
 
             # Update the snake's position based on its current direction
-            self.snake.update()  
+            # self.snake.update()  
 
             # Update and draw the snake
             self.snake.draw()
@@ -81,9 +81,6 @@ class SnakeGame:
         # Clean up and close the game properly
         pygame.quit()
 
-    def update_score(self):
-        # Method to update the score
-        self.score += 1
 
 # To run the game
 if __name__ == "__main__":
