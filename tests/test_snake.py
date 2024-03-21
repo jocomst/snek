@@ -40,6 +40,15 @@ class TestSnake3D(unittest.TestCase):
         self.snake.grow()
         self.assertEqual(len(self.snake.positions), initial_length + 1)
 
+    def test_update_within_boundaries(self):
+        # Test that the snake updates correctly within boundaries
+        self.snake.positions = [[0, 0, 0]]
+        self.snake.x_change = self.block_size
+        self.snake.y_change = 0
+        self.snake.z_change = 0
+        self.snake.update()
+        self.assertIn([self.block_size, 0, 0], self.snake.positions)
+
     def test_get_state(self):
         # Test get_state method
         state = self.snake.get_state()

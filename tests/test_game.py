@@ -57,11 +57,11 @@ def test_snake_initialization(game):
 def test_score_update(game):
     """Test if the game score updates correctly."""
     initial_score = game.score  # Store the initial score
-    game.increment_score()  # Simulate an event that would increase the score
+    game.update_score()  # Simulate an event that would increase the score
     assert game.score == initial_score + 1, "Score should increase by 1 after an increment"
 
     additional_points = 5
     for _ in range(additional_points):  # Simulate multiple events increasing the score
-        game.increment_score()
+        game.update_score()
     
     assert game.score == initial_score + 1 + additional_points, f"Score should be {initial_score + 1 + additional_points} after multiple increments"
