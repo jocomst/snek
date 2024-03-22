@@ -9,6 +9,8 @@ class Snake3D:
         self.x_change = self.block_size  # Initial movement direction along x-axis
         self.y_change = 0
         self.z_change = 0
+        self.is_visible = True  # Initialize the visibility flag
+
         
         # If a model_path is provided, try to load a 3D model, otherwise the snake will be drawn with cubes
         if model_path:
