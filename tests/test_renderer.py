@@ -71,6 +71,11 @@ def test_renderer_adds_model_from_obj_file(renderer):
         mock_glEnd.assert_called_once()
         assert mock_glVertex3fv.call_count == 4
 
+def test_scene_clearing(renderer):
+    with patch('renderer.glClear') as mock_glClear:
+        renderer.clear_scene()
+        mock_glClear.assert_called_once_with(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
 @patch('renderer.glGenTextures', return_value=1)
 @patch('renderer.glBindTexture')
 @patch('renderer.glTexParameteri')
