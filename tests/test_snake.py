@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, MagicMock
 
 # Calculate the absolute path to the src directory and append it to sys.path
 current_dir = os.path.dirname(__file__)
@@ -43,6 +43,23 @@ class TestSnake3D(unittest.TestCase):
         self.assertEqual(state['positions'], self.snake.positions)
         self.assertEqual(state['block_size'], self.snake.block_size)
         self.assertEqual(state['color'], self.snake.color)
+
+    def test_draw(self):
+        # Mock the draw_cube method to ensure it's called correctly
+        self.renderer.draw_cube = MagicMock()
+
+        # Simulate movement to generate more positions
+        self.snake.x_change = self.block_size
+        for _ in range(3):
+            self.snake.update()
+
+        # Now, call the draw method and check if draw_cube is called correctly
+        self.snake.draw()
+
+        # draw_cube should be called once for each position in the snake's body
+        self.assertEqual(self.renderer.draw_cube.call_count, len(self.snake.positions))
+        for position in self.snake.positions:
+            self.renderer.draw_cube.assert_any_call(position, self.snake.block_size, self.snake.color)
 
 # More tests can be added here to cover all aspects of the Snake3D class.
 
