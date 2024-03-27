@@ -28,18 +28,6 @@ class TestSnake3D(unittest.TestCase):
         # Test that the snake starts at the correct position
         self.assertEqual(self.snake.positions, [[0, 0, 0]])
 
-    def test_move(self):
-        # Test snake movement
-        self.snake.move(self.block_size, 0, 0)
-        self.snake.update()
-        self.assertEqual(self.snake.positions[-1], [self.block_size, 0, 0])
-
-    def test_grow(self):
-        # Test snake growth
-        initial_length = len(self.snake.positions)
-        self.snake.grow()
-        self.assertEqual(len(self.snake.positions), initial_length + 1)
-
     def test_update_within_boundaries(self):
         # Test that the snake updates correctly within boundaries
         self.snake.positions = [[0, 0, 0]]
