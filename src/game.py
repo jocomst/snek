@@ -45,31 +45,38 @@ class SnakeGame:
         self.score += 1
 
     def run_game(self):
+        movement_increment = 0.1  # Set a small value for movement
+
         while not self.game_over:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.game_over = True
                 elif event.type == pygame.KEYDOWN:
+                    # Reset movement to zero each time to avoid continuous movement
+                    x_change = y_change = 0
+                    
+                    # Update the direction based on the key press
                     if event.key == pygame.K_UP:
-                        self.snake.move(0, self.snake.block_size, 0)  # Move up
+                        y_change = movement_increment  # Move up
                     elif event.key == pygame.K_DOWN:
-                        self.snake.move(0, -self.snake.block_size, 0)  # Move down
+                        y_change = -movement_increment  # Move down
                     elif event.key == pygame.K_LEFT:
-                        self.snake.move(-self.snake.block_size, 0, 0)  # Move left
+                        x_change = -movement_increment  # Move left
                     elif event.key == pygame.K_RIGHT:
-                        self.snake.move(self.snake.block_size, 0, 0)  # Move right
+                        x_change = movement_increment  # Move right
+
+                    # Update the snake's position based on the key press
+                    self.snake.x += x_change
+                    self.snake.y += y_change
+                    self.snake.positions[-1] = [self.snake.x, self.snake.y, self.snake.z]
 
             # Clear the screen and depth buffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
             # Draw the grass texture
             self.renderer.draw_square(self.grass_texture_id)
-            # self.renderer.draw_triangle()
 
-            # Update the snake's position based on its current direction
-            # self.snake.update()  
-
-            # Update and draw the snake
+            # Draw the snake in its new position
             self.snake.draw()
 
             # Swap buffers to display the scene
