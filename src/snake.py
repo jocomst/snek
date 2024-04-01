@@ -52,11 +52,7 @@ class Snake3D:
             'block_size': self.block_size,
             'color': self.color
         }
-    
-    def set_direction(self, x_change, y_change, z_change):
-        """Set the snake's new direction."""
-        self.snake.x_change = x_change
-        self.snake.y_change = y_change
-        self.snake.z_change = z_change
+
 
 # Rest of your class methods remains unchanged
+

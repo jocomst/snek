@@ -1,39 +1,42 @@
-import pygame
 import random
 
 class Food:
-    def __init__(self, display, block_size, width, height, model_path=None):
-        self.display = display
-        self.color = (0, 255, 0)  # Green
+    def __init__(self, renderer, block_size, width, height, depth, model_path=None):
+        self.renderer = renderer
+        self.color = (0, 255, 0)  # Green color for the food
         self.block_size = block_size
+        self.width = width
+        self.height = height
+        self.depth = depth
         self.model_loaded = False
-        self.x = round(random.randrange(0, width - block_size) / block_size) * block_size
-        self.y = round(random.randrange(0, height - block_size) / block_size) * block_size
 
-        # Try to load the model if a path is provided
+        # Initial position for the food
+        self.x = round(random.randrange(0, self.width - self.block_size) / self.block_size) * self.block_size
+        self.y = round(random.randrange(0, self.height - self.block_size) / self.block_size) * self.block_size
+        self.z = self.block_size  # You might want to fix the z-axis for the food to appear above the ground
+
+        # If a model_path is provided, try to load a 3D model, otherwise use the default cube representation
         if model_path:
             try:
                 self.model = self.load_model(model_path)
                 self.model_loaded = True
-            except IOError:
-                print(f"Unable to load model from {model_path}. Falling back to default representation.")
+            except Exception as e:
+                print(f"Could not load the model at {model_path}: {e}")
                 self.model = None
 
     def load_model(self, model_path):
-        # This is a placeholder for the model loading logic
-        # You'll need to use an appropriate method from your 3D library
-        # For now, we'll just simulate it with a Pygame Surface
-        return pygame.image.load(model_path)
+        # Implement model loading logic here, for now, let's just return None as a placeholder
+        return None
 
     def draw(self):
         if self.model_loaded:
-            # Draw the loaded model
-            # Placeholder: blit the model image onto the display
-            self.display.blit(self.model, (self.x, self.y))
+            # Draw the loaded model, you will need a method in the renderer for this
+            pass
         else:
-            # Draw the default representation
-            pygame.draw.rect(self.display, self.color, [self.x, self.y, self.block_size, self.block_size])
+            # Use the renderer's draw_cube method to draw the food as a cube
+            self.renderer.draw_cube([self.x, self.y, self.z], self.block_size, self.color)
 
-    def relocate(self, width, height):
-        self.x = round(random.randrange(0, width - self.block_size) / self.block_size) * self.block_size
-        self.y = round(random.randrange(0, height - self.block_size) / self.block_size) * self.block_size
+    def relocate(self):
+        self.x = round(random.randrange(0, self.width - self.block_size) / self.block_size) * self.block_size
+        self.y = round(random.randrange(0, self.height - self.block_size) / self.block_size) * self.block_size
+        # Optionally, you may also want to randomize the z-axis if you have a 3D field with varying elevation
