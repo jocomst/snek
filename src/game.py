@@ -5,6 +5,7 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from renderer import Renderer
 from snake import Snake3D
+from food import Food
 
 class SnakeGame:
     def __init__(self):
@@ -25,6 +26,9 @@ class SnakeGame:
 
         # Initialize Snake
         self.snake = Snake3D(self.renderer, block_size=1)  # Block size set to 1 for example
+
+        # Initialize Food
+        self.food = Food(self.renderer, block_size=1, width=self.width, height=self.height, depth=100)
 
         # Game State
         self.game_over = False
@@ -87,6 +91,10 @@ class SnakeGame:
 
         # Clean up and close the game properly
         pygame.quit()
+
+    def food_position_is_invalid(self):
+        """Check if the current food position is within the snake's body."""
+        return any(segment[:2] == [self.food.x, self.food.y] for segment in self.snake.positions)
 
 
 # To run the game

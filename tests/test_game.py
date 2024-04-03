@@ -10,6 +10,7 @@ src_path = os.path.abspath(os.path.join(parent_dir, 'src'))
 sys.path.insert(0, src_path)
 
 from game import SnakeGame  # Update the import statement as necessary
+from food import Food
 
 @pytest.fixture
 def game():
@@ -65,3 +66,22 @@ def test_score_update(game):
         game.update_score()
     
     assert game.score == initial_score + 1 + additional_points, f"Score should be {initial_score + 1 + additional_points} after multiple increments"
+
+def test_food_position_is_invalid(game):
+    # Set the snake's positions manually for testing
+    game.snake.positions = [
+        [0, 0, 0],  # Head of the snake
+        [1, 0, 0],  # First segment of the snake
+        [2, 0, 0],  # Second segment of the snake
+        # ... additional segments as needed
+    ]
+
+    # Test case where food spawns in an empty spot
+    game.food.x = 3
+    game.food.y = 3
+    assert not game.food_position_is_invalid(), "Food should be valid if it's not colliding with the snake."
+
+    # Test case where food spawns where the snake is
+    game.food.x = 1
+    game.food.y = 0
+    assert game.food_position_is_invalid(), "Food should be invalid if it's colliding with the snake."
