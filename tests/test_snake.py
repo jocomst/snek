@@ -28,14 +28,21 @@ class TestSnake3D(unittest.TestCase):
         # Test that the snake starts at the correct position
         self.assertEqual(self.snake.positions, [[0, 0, 0]])
 
-    def test_update_within_boundaries(self):
-        # Test that the snake updates correctly within boundaries
-        self.snake.positions = [[0, 0, 0]]
-        self.snake.x_change = self.block_size
-        self.snake.y_change = 0
-        self.snake.z_change = 0
+    def test_snake_out_of_bounds(self):
+        # Simulate movements
+        for _ in range(5):
+            self.snake.x += self.snake.block_size  # Move right
+            self.snake.update()
+
+        # The snake should not be out of bounds after 5 movements
+        assert not self.snake.is_out_of_bounds()
+
+        # Move once more
+        self.snake.x += self.snake.block_size
         self.snake.update()
-        self.assertIn([self.block_size, 0, 0], self.snake.positions)
+
+        # Now the snake should be out of bounds
+        assert self.snake.is_out_of_bounds()
 
     def test_get_state(self):
         # Test get_state method

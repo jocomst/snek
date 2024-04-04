@@ -12,6 +12,9 @@ class Snake3D:
         self.y_change = 0
         self.z_change = 0
         self.positions = [[self.x, self.y, self.z]]
+        self.max_movements = 5
+        self.initial_x = self.x
+        self.initial_y = self.y
 
         
         # If a model_path is provided, try to load a 3D model, otherwise the snake will be drawn with cubes
@@ -31,12 +34,11 @@ class Snake3D:
             # Here the renderer's draw_cube method is used to draw each segment of the snake
             self.renderer.draw_cube(position, self.block_size, self.color)
 
-    def is_within_boundaries(self, position):
-        # You'll need to define what the boundaries are for your game.
-        min_x, max_x = -10, 10  # Example boundaries
-        min_y, max_y = -10, 10  # Example boundaries
-        x, y, _ = position
-        return min_x <= x <= max_x and min_y <= y <= max_y
+    def is_out_of_bounds(self):
+        # Check the distance from the initial position in terms of movements
+        distance_x = abs(self.x - self.initial_x) / self.block_size
+        distance_y = abs(self.y - self.initial_y) / self.block_size
+        return distance_x > self.max_movements or distance_y > self.max_movements
 
     def update(self):
         self.x += self.x_change
