@@ -29,16 +29,16 @@ class TestSnake3D(unittest.TestCase):
         self.assertEqual(self.snake.positions, [[0, 0, 0]])
 
     def test_snake_out_of_bounds(self):
-        # Simulate movements
-        for _ in range(5):
-            self.snake.x += self.snake.block_size  # Move right
+        movement_increment = 0.1  # The same increment used in the game
+        for _ in range(50):  # 50 increments of 0.1 account for 5 full blocks
+            self.snake.x += movement_increment
             self.snake.update()
 
-        # The snake should not be out of bounds after 5 movements
+        # The snake should not be out of bounds after moving the equivalent of 5 blocks
         assert not self.snake.is_out_of_bounds()
 
-        # Move once more
-        self.snake.x += self.snake.block_size
+        # Move once more beyond the 5 block limit
+        self.snake.x += movement_increment
         self.snake.update()
 
         # Now the snake should be out of bounds

@@ -49,38 +49,31 @@ class SnakeGame:
         self.score += 1
 
     def run_game(self):
-        movement_increment = 0.1  # Set a small value for movement
+        movement_increment = 0.1  # Movement increment
 
         while not self.game_over:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.game_over = True
                 elif event.type == pygame.KEYDOWN:
-                    # Reset movement to zero each time to avoid continuous movement
-                    x_change = y_change = 0
-                    
-                    # Update the direction based on the key press
+                    # Set the direction based on the key press
                     if event.key == pygame.K_UP:
-                        y_change = movement_increment  # Move up
+                        self.snake.set_direction(0, movement_increment)
                     elif event.key == pygame.K_DOWN:
-                        y_change = -movement_increment  # Move down
+                        self.snake.set_direction(0, -movement_increment)
                     elif event.key == pygame.K_LEFT:
-                        x_change = -movement_increment  # Move left
+                        self.snake.set_direction(-movement_increment, 0)
                     elif event.key == pygame.K_RIGHT:
-                        x_change = movement_increment  # Move right
+                        self.snake.set_direction(movement_increment, 0)
 
-                    # Update the snake's position based on the key press
-                    self.snake.x += x_change
-                    self.snake.y += y_change
-                    self.snake.positions[-1] = [self.snake.x, self.snake.y, self.snake.z]
+            # Update the snake's position
+            self.snake.update()
 
             # Clear the screen and depth buffer
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-            # Draw the grass texture
+            # Draw the grass texture and the snake
             self.renderer.draw_square(self.grass_texture_id)
-
-            # Draw the snake in its new position
             self.snake.draw()
 
             # Swap buffers to display the scene
@@ -89,7 +82,7 @@ class SnakeGame:
             # Cap the frame rate
             self.clock.tick(60)
 
-        # Clean up and close the game properly
+        # Cleanup
         pygame.quit()
 
     def food_position_is_invalid(self):

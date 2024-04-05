@@ -15,6 +15,8 @@ class Snake3D:
         self.max_movements = 5
         self.initial_x = self.x
         self.initial_y = self.y
+        self.direction = (0, 0)  # Direction represented as (x_change, y_change)
+
 
         
         # If a model_path is provided, try to load a 3D model, otherwise the snake will be drawn with cubes
@@ -28,6 +30,9 @@ class Snake3D:
 
     # ... rest of your class methods ...
 
+    def set_direction(self, x_change, y_change):
+        self.direction = (x_change, y_change)
+
     def draw(self):
         # Iterate through the snake's positions and draw each segment
         for position in self.positions:
@@ -35,15 +40,17 @@ class Snake3D:
             self.renderer.draw_cube(position, self.block_size, self.color)
 
     def is_out_of_bounds(self):
-        # Check the distance from the initial position in terms of movements
         distance_x = abs(self.x - self.initial_x) / self.block_size
         distance_y = abs(self.y - self.initial_y) / self.block_size
+        print(f"Distance X: {distance_x}, Distance Y: {distance_y}, Current X: {self.x}, Initial X: {self.initial_x}")
         return distance_x > self.max_movements or distance_y > self.max_movements
 
     def update(self):
-        self.x += self.x_change
-        self.y += self.y_change
-        self.z += self.z_change
+        # Update the snake's position based on its direction
+        x_change, y_change = self.direction
+        self.x += x_change
+        self.y += y_change
+        # Update the position list to reflect the new head position
         self.positions.append([self.x, self.y, self.z])
         self.positions.pop(0)  # Remove the tail's last position to simulate movement
 
