@@ -1,3 +1,5 @@
+import pygame
+
 class Snake3D:
     def __init__(self, renderer, block_size, model_path=None):
         self.renderer = renderer  # Assuming renderer is passed in as a parameter
@@ -46,6 +48,8 @@ class Snake3D:
         return distance_x > self.max_movements or distance_y > self.max_movements
 
     def update(self):
+        pygame.time.delay(500)
+
         # Update the snake's position based on its direction
         x_change, y_change = self.direction
         self.x += x_change
