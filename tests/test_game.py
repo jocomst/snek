@@ -85,3 +85,12 @@ def test_food_position_is_invalid(game):
     game.food.x = 1
     game.food.y = 0
     assert game.food_position_is_invalid(), "Food should be invalid if it's colliding with the snake."
+
+def test_food_initial_position(game):
+    # Check if food is within the boundaries
+    assert 0 <= game.food.x < game.width
+    assert 0 <= game.food.y < game.height
+
+    # Check if food is not in the same position as the snake
+    snake_positions = set((segment[0], segment[1]) for segment in game.snake.positions)
+    assert (game.food.x, game.food.y) not in snake_positions
