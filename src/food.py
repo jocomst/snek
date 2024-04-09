@@ -10,10 +10,10 @@ class Food:
         self.depth = depth
         self.model_loaded = False
 
-        # Initial position for the food
-        self.x = round(random.randrange(0, self.width - self.block_size) / self.block_size) * self.block_size
-        self.y = round(random.randrange(0, self.height - self.block_size) / self.block_size) * self.block_size
-        self.z = self.block_size  # You might want to fix the z-axis for the food to appear above the ground
+        # Adjusted initial position for the food within a 0 to 0.5 range
+        self.x = (round(random.randrange(0, self.width - self.block_size) / self.block_size) * self.block_size) / self.width
+        self.y = (round(random.randrange(0, self.height - self.block_size) / self.block_size) * self.block_size) / self.height
+        self.z = 0.01  # Slightly above the ground to ensure visibility
 
         # If a model_path is provided, try to load a 3D model, otherwise use the default cube representation
         if model_path:

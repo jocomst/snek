@@ -75,6 +75,7 @@ class SnakeGame:
             # Draw the grass texture and the snake
             self.renderer.draw_square(self.grass_texture_id)
             self.snake.draw()
+            self.food.draw()  # Draw the food
 
             # Swap buffers to display the scene
             pygame.display.flip()
