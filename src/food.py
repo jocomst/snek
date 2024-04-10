@@ -28,13 +28,19 @@ class Food:
         # Implement model loading logic here, for now, let's just return None as a placeholder
         return None
 
-    def draw(self):
-        if self.model_loaded:
-            # Draw the loaded model, you will need a method in the renderer for this
-            pass
-        else:
-            # Use the renderer's draw_cube method to draw the food as a cube
-            self.renderer.draw_cube([self.x, self.y, self.z], self.block_size, self.color)
+    def draw(self, x=None, y=None, z=None):
+            # Use provided coordinates if available, otherwise use the food's current position
+            draw_x = x if x is not None else self.x
+            draw_y = y if y is not None else self.y
+            draw_z = z if z is not None else self.z
+
+            if self.model_loaded:
+                # Draw the loaded model, you will need a method in the renderer for this
+                # This is a placeholder for drawing a 3D model, replace it with the actual model rendering logic
+                pass
+            else:
+                # Use the renderer's draw_cube method to draw the food as a cube
+                self.renderer.draw_cube([draw_x, draw_y, draw_z], self.block_size, self.color)
 
     def relocate(self):
         self.x = round(random.randrange(0, self.width - self.block_size) / self.block_size) * self.block_size
