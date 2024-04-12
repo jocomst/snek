@@ -10,39 +10,21 @@ from food import Food
 class SnakeGame:
     def __init__(self):
         pygame.init()
-
-        # Game Configuration
         self.width, self.height = 800, 600
-
-        self.score = 0  # Initialize the score attribute
-
-        # Game Initialization
+        self.score = 0
         self.game_display = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL)
         pygame.display.set_caption('Snake Game')
         self.clock = pygame.time.Clock()
-
-        # Initialize Renderer
-        self.renderer = Renderer(self.width, self.height)  # Pass width and height to Renderer
-
-        # Initialize Snake
-        self.snake = Snake3D(self.renderer, block_size=1)  # Block size set to 1 for example
-
-        # Initialize Food
+        self.renderer = Renderer(self.width, self.height)
+        self.snake = Snake3D(self.renderer, block_size=1)
         self.food = Food(self.renderer, block_size=1, width=self.width, height=self.height, depth=100)
-
-        # Game State
         self.game_over = False
-
-        # Game Score
         self.score = 0
-
-        # Load Grass Texture
         self.grass_texture_id = self.renderer.load_texture('./models/grassTexture.jpg')
-
-        # Initialize the scene, camera, and lighting
         self.renderer.initialize_scene()
         self.renderer.setup_camera()
         self.renderer.setup_lighting()
+        self.movement_counter = 0  # Initialize the movement counter
 
     def update_score(self):
         # Method to update the score
